@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>illumina — yoga collective, Barcelona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F2ECDE;--cream2:#F8F4EA;--ink:#3A2414;--brown:#4A2A1B;--brown-deep:#3A2013;--sand:#D9C9A6;--line:rgba(58,36,20,0.16);--max:1240px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+.cap{text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+.arch{border-radius:200px 200px 0 0;overflow:hidden;}
+.grain{position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.07;mix-blend-mode:overlay;pointer-events:none;}
+
+/* PAGES — only one visible at a time */
+.page{display:none;}
+.page.active{display:block;}
+
+/* NAV */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 0;color:#fff;transition:background .35s ease,color .35s ease,padding .3s ease;}
+header.scrolled,header.solid{background:rgba(242,236,222,.94);color:var(--ink);padding:14px 0;border-bottom:1px solid var(--line);}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.brand{display:flex;align-items:baseline;gap:8px;cursor:pointer;background:none;border:none;}
+.brand .name{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:22px;color:inherit;}
+.brand .sub{font-size:9px;opacity:.8;letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+nav.nav-links{display:none;gap:30px;align-items:center;}
+.nav-links button{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.92;font-weight:600;background:none;border:none;color:inherit;cursor:pointer;font-family:'Inter',sans-serif;}
+.nav-links button.active{text-decoration:underline;text-underline-offset:4px;opacity:1;}
+.burger{display:flex;flex-direction:column;gap:5px;width:22px;background:none;border:none;cursor:pointer;}
+.burger span{height:1.5px;width:100%;background:currentColor;display:block;}
+.mobile-menu{position:fixed;inset:0;background:var(--brown);z-index:200;color:var(--cream2);display:flex;flex-direction:column;justify-content:center;padding:34px;transform:translateY(-100%);transition:transform .45s cubic-bezier(.7,0,.2,1);}
+.mobile-menu.open{transform:translateY(0);}
+.mobile-menu button{display:block;width:100%;text-align:left;padding:13px 0;font-family:'Fraunces',serif;font-style:italic;font-size:26px;border-bottom:1px solid rgba(255,255,255,.15);background:none;border-top:none;border-left:none;border-right:none;color:#fff;cursor:pointer;}
+.mobile-menu .close{position:absolute;top:24px;right:26px;background:none;border:none;color:#fff;font-size:26px;width:auto;padding:0;border-bottom:none;}
+.mobile-menu .m-cta{margin-top:26px;display:inline-block;border:1px solid rgba(255,255,255,.4)!important;padding:12px 20px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-family:'Inter',sans-serif;font-weight:600;width:auto;}
+
+/* HERO video (home) */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#1c1006;}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.05);}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,12,6,.35) 0%,rgba(20,12,6,.05) 35%,rgba(20,12,6,.15) 60%,rgba(20,12,6,.65) 100%);}
+.hero-bottom{position:absolute;left:0;right:0;bottom:0;z-index:3;color:#fff;padding:0 0 42px;}
+.hero-word-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.hero-word{font-family:'Fraunces',serif;font-style:italic;font-size:26px;min-width:90px;}
+.hero-rule{height:1px;width:34px;background:rgba(255,255,255,.5);}
+.hero-tagline{font-size:13px;opacity:.88;max-width:280px;}
+.hero-scroll{position:absolute;right:24px;bottom:26px;z-index:3;color:#fff;font-size:10px;writing-mode:vertical-rl;letter-spacing:.15em;text-transform:uppercase;opacity:.75;font-weight:600;}
+
+/* SUBPAGE static hero */
+.subhero{position:relative;height:56vh;min-height:320px;display:flex;align-items:flex-end;overflow:hidden;color:#fff;}
+.subhero .grain{opacity:.1;}
+.subhero-inner{position:relative;z-index:2;padding-bottom:40px;}
+.subhero .eyebrow{color:rgba(255,255,255,.75);margin-bottom:8px;}
+.subhero h1{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:clamp(34px,7vw,64px);}
+.sh-schedule{background:linear-gradient(200deg,#8a6a3e,#3a2313);}
+.sh-practices{background:linear-gradient(200deg,#4c6a63,#182420);}
+.sh-events{background:linear-gradient(200deg,#7a3a2c,#25120d);}
+.sh-teachers{background:linear-gradient(200deg,#a97a4a,#3a2313);}
+.sh-gallery{background:linear-gradient(200deg,#5b5a86,#1c1b32);}
+
+section{padding:88px 0;}
+.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-bottom:16px;font-weight:600;}
+.intro{text-align:center;}
+.intro p{font-size:clamp(19px,3.6vw,27px);line-height:1.5;max-width:820px;margin:0 auto;font-family:'Fraunces',serif;font-style:italic;}
+.intro .accent{color:var(--brown);font-weight:600;}
+
+.split{display:grid;grid-template-columns:1fr;gap:34px;align-items:center;}
+.split .ph{aspect-ratio:4/5;background:linear-gradient(160deg,#c9b28a,#7a5636);position:relative;}
+.split h2{font-size:clamp(28px,5vw,42px);margin-bottom:18px;font-family:'Fraunces',serif;font-style:italic;}
+.split p{max-width:46ch;opacity:.85;margin-bottom:14px;font-size:14.5px;}
+.split .with-explore{margin-top:24px;display:flex;gap:26px;flex-wrap:wrap;}
+.we{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.we b{display:block;font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:22px;margin-bottom:2px;text-transform:none;letter-spacing:0;}
+
+.practices-band{background:var(--brown);color:var(--cream2);}
+.practices-band .eyebrow{opacity:.65;color:var(--cream2);}
+.practices-band h2{font-size:clamp(28px,5vw,44px);max-width:600px;font-family:'Fraunces',serif;font-style:italic;margin-bottom:34px;}
+.p-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;}
+.p-scroll::-webkit-scrollbar{display:none;}
+.p-card{flex:0 0 74%;scroll-snap-align:start;aspect-ratio:3/4;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;overflow:hidden;}
+.p-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7) 100%);}
+.p-card .t{position:relative;z-index:2;color:#fff;}
+.p-card .t .cap{font-size:10px;opacity:.85;margin-bottom:6px;display:block;color:#fff;}
+.p-card .t h3{font-family:'Fraunces',serif;font-style:italic;font-size:25px;font-weight:400;}
+.p1{background:linear-gradient(160deg,#a97a4a,#3a2313);}.p2{background:linear-gradient(160deg,#4c6a63,#182420);}
+.p3{background:linear-gradient(160deg,#8a4b30,#2c1810);}.p4{background:linear-gradient(160deg,#5b5a86,#1c1b32);}
+.p5{background:linear-gradient(160deg,#7c3a2c,#25120d);}
+
+.p-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+.p-tile{position:relative;aspect-ratio:4/5;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;overflow:hidden;}
+.p-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.72) 100%);}
+.p-tile .t{position:relative;z-index:2;}
+.p-tile h3{font-family:'Fraunces',serif;font-style:italic;font-size:28px;font-weight:400;}
+.p-tile p{font-size:13px;opacity:.9;margin-top:8px;max-width:30ch;}
+.p-tile .meta{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;opacity:.8;margin-top:10px;}
+
+.events-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:34px;}
+.events-head h2{font-size:clamp(28px,5vw,44px);font-family:'Fraunces',serif;font-style:italic;font-weight:400;}
+.see-all{font-size:11px;text-decoration:underline;text-underline-offset:4px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;background:none;border:none;color:inherit;cursor:pointer;font-family:'Inter',sans-serif;}
+.event-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+.poster{position:relative;border-radius:2px;overflow:hidden;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:space-between;padding:22px;color:#fff;}
+.poster::before{content:"";position:absolute;inset:0;z-index:1;}
+.poster .top-row{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;font-size:10px;font-weight:600;text-transform:uppercase;}
+.poster .date-badge{text-align:right;line-height:1.3;}
+.poster .date-badge b{display:block;font-family:'Fraunces',serif;font-style:italic;font-size:19px;font-weight:400;text-transform:none;}
+.poster h3{position:relative;z-index:2;font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:clamp(28px,7vw,40px);line-height:.95;}
+.poster .sub{position:relative;z-index:2;font-size:12.5px;margin-top:8px;max-width:26ch;opacity:.92;}
+.poster .bottom-row{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-size:10px;text-transform:uppercase;font-weight:600;}
+.poster .book-btn{border:1px solid rgba(255,255,255,.5);padding:8px 14px;border-radius:20px;background:none;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;}
+.e1{background:linear-gradient(200deg,#4a2c8c 0%,#7a3a2c 55%,#d99a4a 100%);}.e1::before{background:radial-gradient(circle at 30% 20%,rgba(0,0,0,0),rgba(0,0,0,.35) 90%);}
+.e2{background:linear-gradient(200deg,#1c2b4a 0%,#274563 55%,#6f8ea3 100%);}.e2::before{background:radial-gradient(circle at 70% 70%,rgba(0,0,0,0),rgba(0,0,0,.4) 90%);}
+.e3{background:linear-gradient(200deg,#7a1f2e 0%,#b9532a 60%,#e0a24a 100%);}.e3::before{background:radial-gradient(circle at 60% 20%,rgba(0,0,0,0),rgba(0,0,0,.35) 90%);}
+.e4{background:linear-gradient(200deg,#2c5a4a 0%,#4a7a5c 55%,#a9c98a 100%);}.e4::before{background:radial-gradient(circle at 40% 30%,rgba(0,0,0,0),rgba(0,0,0,.35) 90%);}
+.e5{background:linear-gradient(200deg,#5a2c6a 0%,#8a4a7a 55%,#d99ab4 100%);}.e5::before{background:radial-gradient(circle at 60% 60%,rgba(0,0,0,0),rgba(0,0,0,.35) 90%);}
+.e6{background:linear-gradient(200deg,#2c3a6a 0%,#4a5a8a 55%,#9ab4d9 100%);}.e6::before{background:radial-gradient(circle at 30% 60%,rgba(0,0,0,0),rgba(0,0,0,.35) 90%);}
+
+.teachers-title{font-size:clamp(28px,5vw,44px);font-family:'Fraunces',serif;font-style:italic;font-weight:400;margin-bottom:34px;}
+.teachers-grid{display:grid;grid-template-columns:1fr;gap:32px;}
+.teacher .ph{aspect-ratio:4/5;background:linear-gradient(160deg,#cbb48a,#7a5636);position:relative;margin-bottom:16px;}
+.teacher .role{font-size:10px;opacity:.6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:600;}
+.teacher h3{font-family:'Fraunces',serif;font-style:italic;font-size:26px;margin-bottom:8px;font-weight:400;}
+.teacher p{font-size:13.5px;opacity:.82;max-width:34ch;}
+
+.membership{background:var(--brown-deep);color:var(--cream2);text-align:center;}
+.membership h2{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(26px,5vw,40px);margin-bottom:18px;font-weight:400;}
+.membership p{max-width:640px;margin:0 auto 30px;opacity:.85;font-size:14px;line-height:1.7;}
+.membership .m-btn{display:inline-block;border:1px solid rgba(255,255,255,.5);padding:14px 26px;border-radius:26px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;background:none;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;}
+
+.sched-info{display:grid;grid-template-columns:1fr;gap:40px;margin-bottom:50px;}
+.sched-info h3{font-family:'Fraunces',serif;font-style:italic;font-size:24px;margin-bottom:14px;font-weight:400;}
+.sched-info p{font-size:13.5px;opacity:.8;line-height:1.8;max-width:44ch;}
+.week-bar{display:flex;gap:8px;overflow-x:auto;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:30px;}
+.day-pill{flex:0 0 auto;text-align:center;padding:10px 16px;border-radius:20px;font-size:12px;opacity:.7;}
+.day-pill.active{background:var(--brown);color:#fff;opacity:1;}
+.class-row{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap;}
+.class-row .cn{font-family:'Fraunces',serif;font-style:italic;font-size:19px;}
+.class-row .meta{font-size:12px;opacity:.65;}
+.class-row .book-mini{font-size:11px;text-transform:uppercase;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;font-weight:600;background:none;border:none;color:inherit;cursor:pointer;font-family:'Inter',sans-serif;}
+
+.gallery-title{font-size:clamp(28px,5vw,44px);font-family:'Fraunces',serif;font-style:italic;font-weight:400;margin-bottom:30px;}
+.g-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.g-item{aspect-ratio:1/1;position:relative;overflow:hidden;}
+.g1{background:linear-gradient(160deg,#e2d3ac,#a9865a);}.g2{background:linear-gradient(160deg,#4a3a2c,#241810);}
+.g3{background:linear-gradient(160deg,#8a5c3a,#3a2313);}.g4{background:linear-gradient(160deg,#5c6a5a,#26302a);}
+.g5{background:linear-gradient(160deg,#a9714a,#5a3620);}.g6{background:linear-gradient(160deg,#6a4a70,#241830);}
+.g7{background:linear-gradient(160deg,#3a5a6a,#182430);}.g8{background:linear-gradient(160deg,#8a3a4a,#3a1218);}
+.g-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.g-play span{width:38px;height:38px;border:1px solid rgba(255,255,255,.7);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;}
+.ig-line{margin-top:26px;font-size:12.5px;text-align:center;}
+.ig-line a{text-decoration:underline;text-underline-offset:3px;font-weight:600;}
+.ig-line button{background:none;border:none;color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;font-size:inherit;}
+
+footer{background:var(--brown);color:var(--cream2);}
+.foot-top{padding:80px 0 60px;display:grid;grid-template-columns:1fr;gap:50px;}
+.foot-news .cap{font-size:13px;margin-bottom:16px;opacity:.9;}
+.foot-news p{font-size:13px;opacity:.75;max-width:40ch;margin-bottom:22px;line-height:1.7;}
+.news-box{background:var(--cream2);padding:26px;max-width:420px;}
+.news-box input{width:100%;border:1px solid var(--line);padding:12px;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);margin-bottom:14px;}
+.news-box button{background:var(--ink);color:var(--cream2);border:none;padding:12px 20px;font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;font-weight:600;}
+.foot-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:30px;}
+.foot-cols .col-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;opacity:.6;margin-bottom:14px;font-weight:600;}
+.foot-cols button,.foot-cols a{display:block;font-size:13.5px;opacity:.85;margin-bottom:10px;background:none;border:none;color:inherit;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;padding:0;}
+.foot-cols .sub-link{opacity:.6;font-size:12px;padding-left:10px;}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.15);padding:22px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:10.5px;opacity:.6;text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+
+@media(min-width:860px){
+  nav.nav-links{display:flex;} .burger{display:none;}
+  .split{grid-template-columns:1fr 1fr;}
+  .teachers-grid{grid-template-columns:repeat(2,1fr);gap:60px;}
+  .event-grid{grid-template-columns:repeat(3,1fr);}
+  .p-scroll{overflow:visible;} .p-card{flex:1;}
+  .p-grid{grid-template-columns:repeat(3,1fr);}
+  .g-grid{grid-template-columns:repeat(4,1fr);}
+  .foot-top{grid-template-columns:1fr 1fr;gap:80px;}
+  .foot-cols{grid-template-columns:repeat(3,1fr);}
+  .sched-info{grid-template-columns:1fr 1fr;}
+  section{padding:130px 0;}
+}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap nav-row">
+    <button class="brand" onclick="goTo('home')"><span class="name">illumina</span><span class="sub">Yoga Collective</span></button>
+    <nav class="nav-links">
+      <button data-tab="schedule" onclick="goTo('schedule')">Schedule</button>
+      <button data-tab="practices" onclick="goTo('practices')">Practices</button>
+      <button data-tab="events" onclick="goTo('events')">Events</button>
+      <button data-tab="teachers" onclick="goTo('teachers')">Teachers</button>
+      <button data-tab="gallery" onclick="goTo('gallery')">Gallery</button>
+    </nav>
+    <div class="nav-right">
+      <button class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close" onclick="document.getElementById('mobileMenu').classList.remove('open')">&times;</button>
+  <button onclick="goTo('home')">Home</button>
+  <button onclick="goTo('schedule')">Schedule</button>
+  <button onclick="goTo('practices')">Practices</button>
+  <button onclick="goTo('events')">Events</button>
+  <button onclick="goTo('teachers')">Teachers</button>
+  <button onclick="goTo('gallery')">Gallery</button>
+</div>
+
+<!-- ===================== HOME ===================== -->
+<div class="page active" id="page-home" data-tab="home">
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline poster="https://assets.mixkit.co/videos/4420/4420-thumb-360-0.jpg">
+      <source src="https://assets.mixkit.co/videos/4420/4420-360.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="grain"></div>
+    <div class="wrap hero-bottom">
+      <div class="hero-word-row">
+        <span class="hero-word" id="rotatingWord">explore.</span>
+        <span class="hero-rule"></span>
+        <span class="hero-tagline">Come back to your light, together — your community in Barcelona.</span>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <section class="intro">
+    <div class="wrap"><p>illumina is a yoga collective in Barcelona — <span class="accent">not just yoga</span>, a space to explore, play and feel. We gather outdoors, pairing practice with painting, paddle, sailing, music, even pizza.</p></div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div class="ph arch"><div class="grain"></div></div>
+      <div>
+        <div class="eyebrow">the collective</div>
+        <h2>Come back to your light, together.</h2>
+        <p>Founded on the idea that yoga is better shared, illumina brings people together across Barcelona — on rooftops, at the beach, on a paddle board, under a full moon.</p>
+        <div class="with-explore">
+          <div class="we"><b>Explore</b>New ground, every session</div>
+          <div class="we"><b>Play</b>Light on it, no pressure</div>
+          <div class="we"><b>Feel</b>Breath and body, first</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="practices-band">
+    <div class="wrap">
+      <div class="eyebrow">practices</div>
+      <h2>Yoga, plus whatever moves you.</h2>
+      <div class="p-scroll">
+        <div class="p-card p1"><div class="t"><span class="cap">Land</span><h3>Yoga & painting</h3></div></div>
+        <div class="p-card p2"><div class="t"><span class="cap">Water</span><h3>Saltwater</h3></div></div>
+        <div class="p-card p3"><div class="t"><span class="cap">Ritual</span><h3>Full moon yoga</h3></div></div>
+        <div class="p-card p4"><div class="t"><span class="cap">Sail</span><h3>Sole nero</h3></div></div>
+        <div class="p-card p5"><div class="t"><span class="cap">Share</span><h3>Yoga & pizza</h3></div></div>
+      </div>
+      <div style="text-align:center;margin-top:30px;"><button class="see-all" onclick="goTo('practices')">See all practices →</button></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="events-head">
+        <div><div class="eyebrow">schedule</div><h2>What's coming up.</h2></div>
+        <button class="see-all" onclick="goTo('events')">Full calendar →</button>
+      </div>
+      <div class="event-grid">
+        <div class="poster e1">
+          <div class="top-row"><span>Location upon<br>registration</span><div class="date-badge"><b>27</b>Aug · 20:00</div></div>
+          <div><h3>full moon<br>yoga</h3><p class="sub">Release what was, welcome what comes.</p>
+          <div class="bottom-row"><span>× LotuswithLucy</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div>
+        </div>
+        <div class="poster e2">
+          <div class="top-row"><span>Barcelona<br>coastline</span><div class="date-badge"><b>20</b>Aug · 19:30</div></div>
+          <div><h3>yoga<br>sangha</h3><p class="sub">Meditation, acroyoga and watercolours.</p>
+          <div class="bottom-row"><span>× yogamarichyasana</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div>
+        </div>
+        <div class="poster e3">
+          <div class="top-row"><span>Location upon<br>registration</span><div class="date-badge"><b>12</b>Aug · Sunset</div></div>
+          <div><h3>sole<br>nero</h3><p class="sub">Eclipse sail & sunset aperitivo.</p>
+          <div class="bottom-row"><span>× eswell</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">teachers</div>
+      <h2 class="teachers-title">The people holding the space.</h2>
+      <div class="teachers-grid">
+        <div class="teacher"><div class="ph arch"><div class="grain"></div></div><div class="role">Co-founder · Teacher</div><h3>Callu</h3><p>Guides movement and breathwork with a soft, grounded presence.</p></div>
+        <div class="teacher"><div class="ph arch"><div class="grain"></div></div><div class="role">Co-founder · Teacher</div><h3>Martina</h3><p>Weaves ritual, sound and community into every gathering.</p></div>
+      </div>
+      <div style="text-align:center;margin-top:30px;"><button class="see-all" onclick="goTo('teachers')">Meet the teachers →</button></div>
+    </div>
+  </section>
+
+  <section class="membership">
+    <div class="wrap">
+      <h2>Join the circle.</h2>
+      <p>We're setting up online booking. In the meantime, tell us which session calls to you and we'll get you sorted by email within 48h.</p>
+      <button class="m-btn" onclick="goTo('schedule')">See the schedule</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">gallery</div>
+      <h2 class="gallery-title">Moments, in motion.</h2>
+      <div class="g-grid">
+        <div class="g-item g1"></div>
+        <div class="g-item g2"><div class="g-play"><span>▶</span></div></div>
+        <div class="g-item g3"></div>
+        <div class="g-item g4"><div class="g-play"><span>▶</span></div></div>
+      </div>
+      <p class="ig-line">Follow along on <a href="https://www.instagram.com/illumina.collective/" target="_blank">@illumina.collective</a> · <button onclick="goTo('gallery')">See full gallery →</button></p>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== SCHEDULE ===================== -->
+<div class="page" id="page-schedule" data-tab="schedule">
+  <section class="subhero sh-schedule"><div class="grain"></div>
+    <div class="wrap subhero-inner"><div class="eyebrow">Book your class</div><h1>Schedule</h1></div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="sched-info">
+        <div><h3>Booking</h3><p>Booking is essential before joining a session — spots are limited so we can keep every gathering intimate. Reserve below and we'll confirm within 48h.</p></div>
+        <div><h3>Good to know</h3><p>Arrive 10' early. Bring your own mat if you have one. Wear comfortable clothing, and bring water.</p></div>
+      </div>
+      <div class="week-bar">
+        <div class="day-pill">Mon</div><div class="day-pill">Tue</div><div class="day-pill">Wed</div>
+        <div class="day-pill active">Thu</div><div class="day-pill">Fri</div><div class="day-pill">Sat</div><div class="day-pill">Sun</div>
+      </div>
+      <div class="class-row"><div><div class="cn">Full moon yoga</div><div class="meta">20:00 · Location upon registration</div></div><button class="book-mini" onclick="goTo('home',true)">Book →</button></div>
+      <div class="class-row"><div><div class="cn">Yoga sangha</div><div class="meta">19:30 · Barcelona coastline</div></div><button class="book-mini" onclick="goTo('home',true)">Book →</button></div>
+      <div class="class-row"><div><div class="cn">Sole nero</div><div class="meta">Sunset · Location upon registration</div></div><button class="book-mini" onclick="goTo('home',true)">Book →</button></div>
+      <p style="margin-top:30px;font-size:12.5px;opacity:.6;">* Online booking is coming soon. For now, request your spot via the form below.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== PRACTICES ===================== -->
+<div class="page" id="page-practices" data-tab="practices">
+  <section class="subhero sh-practices"><div class="grain"></div>
+    <div class="wrap subhero-inner"><div class="eyebrow">What we do</div><h1>Practices</h1></div>
+  </section>
+  <section class="intro"><div class="wrap"><p>Yoga is our starting point — never the whole story.</p></div></section>
+  <section style="padding-top:0;">
+    <div class="wrap p-grid">
+      <div class="p-tile p1"><div class="t"><h3>Yoga & painting</h3><p>Meditation, acroyoga and watercolours in the open air.</p><div class="meta">Land · All levels</div></div></div>
+      <div class="p-tile p2"><div class="t"><h3>Saltwater</h3><p>Paddle, breath and a sunset aperitivo by the sea.</p><div class="meta">Water · Seasonal</div></div></div>
+      <div class="p-tile p3"><div class="t"><h3>Full moon yoga</h3><p>Release what was, welcome what comes.</p><div class="meta">Ritual · Monthly</div></div></div>
+      <div class="p-tile p4"><div class="t"><h3>Sole nero</h3><p>An eclipse sail, sunset practice and good company.</p><div class="meta">Sail · Occasional</div></div></div>
+      <div class="p-tile p5"><div class="t"><h3>Yoga & pizza</h3><p>Practice, then table — community over a slow meal.</p><div class="meta">Share · Monthly</div></div></div>
+      <div class="p-tile" style="background:linear-gradient(160deg,#5b5a86,#1c1b32);"><div class="t"><h3>Yoga sangha</h3><p>Meditation, acroyoga and watercolours together.</p><div class="meta">Land · All levels</div></div></div>
+    </div>
+  </section>
+  <section class="membership">
+    <div class="wrap"><h2>Not sure which one?</h2><p>Tell us a bit about you and we'll help you find your first session.</p>
+    <button class="m-btn" onclick="goTo('schedule')">See the schedule</button></div>
+  </section>
+</div>
+
+<!-- ===================== EVENTS ===================== -->
+<div class="page" id="page-events" data-tab="events">
+  <section class="subhero sh-events"><div class="grain"></div>
+    <div class="wrap subhero-inner"><div class="eyebrow">August — 2026 · Barcelona</div><h1>Events</h1></div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="event-grid">
+        <div class="poster e1"><div class="top-row"><span>Location upon<br>registration</span><div class="date-badge"><b>27</b>Aug · 20:00</div></div>
+        <div><h3>full moon<br>yoga</h3><p class="sub">Release what was, welcome what comes.</p><div class="bottom-row"><span>× LotuswithLucy</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div></div>
+        <div class="poster e2"><div class="top-row"><span>Barcelona<br>coastline</span><div class="date-badge"><b>20</b>Aug · 19:30</div></div>
+        <div><h3>yoga<br>sangha</h3><p class="sub">Meditation, acroyoga and watercolours.</p><div class="bottom-row"><span>× yogamarichyasana</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div></div>
+        <div class="poster e3"><div class="top-row"><span>Location upon<br>registration</span><div class="date-badge"><b>12</b>Aug · Sunset</div></div>
+        <div><h3>sole<br>nero</h3><p class="sub">Eclipse sail & sunset aperitivo.</p><div class="bottom-row"><span>× eswell</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div></div>
+        <div class="poster e4"><div class="top-row"><span>Location upon<br>registration</span><div class="date-badge"><b>05</b>Sep · 19:00</div></div>
+        <div><h3>yoga<br>& pizza</h3><p class="sub">Practice, then table — community over a slow meal.</p><div class="bottom-row"><span>× pizzeria 081</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div></div>
+        <div class="poster e5"><div class="top-row"><span>Barcelona<br>studio</span><div class="date-badge"><b>10</b>Sep · 18:00</div></div>
+        <div><h3>yoga<br>& painting</h3><p class="sub">Meditation, acroyoga and watercolours in the open air.</p><div class="bottom-row"><span>× yogamarichyasana</span><button class="book-btn" onclick="goTo('schedule')">Book</button></div></div></div>
+        <div class="poster e6"><div class="top-row"><span>Coming<br>soon</span><div class="date-badge"><b>—</b>TBA</div></div>
+        <div><h3>saltwater</h3><p class="sub">Paddle, breath and sunset — dates coming soon.</p><div class="bottom-row"><span>× illumina</span><button class="book-btn" onclick="goTo('schedule')">Notify me</button></div></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== TEACHERS ===================== -->
+<div class="page" id="page-teachers" data-tab="teachers">
+  <section class="subhero sh-teachers"><div class="grain"></div>
+    <div class="wrap subhero-inner"><div class="eyebrow">The people holding the space</div><h1>Teachers</h1></div>
+  </section>
+  <section>
+    <div class="wrap teachers-grid">
+      <div class="teacher"><div class="ph arch"><div class="grain"></div></div><div class="role">Co-founder · Teacher</div><h3>Callu</h3><p>Guides movement and breathwork with a soft, grounded presence — bringing people back to their body, one session at a time. [Bio complète à venir]</p></div>
+      <div class="teacher"><div class="ph arch"><div class="grain"></div></div><div class="role">Co-founder · Teacher</div><h3>Martina</h3><p>Weaves ritual, sound and community into every gathering — the heartbeat behind illumina's open-circle spirit. [Bio complète à venir]</p></div>
+    </div>
+  </section>
+  <section class="membership">
+    <div class="wrap"><h2>Practice with them.</h2><p>See when Callu and Martina are teaching next.</p>
+    <button class="m-btn" onclick="goTo('schedule')">See the schedule</button></div>
+  </section>
+</div>
+
+<!-- ===================== GALLERY ===================== -->
+<div class="page" id="page-gallery" data-tab="gallery">
+  <section class="subhero sh-gallery"><div class="grain"></div>
+    <div class="wrap subhero-inner"><div class="eyebrow">Moments, in motion</div><h1>Gallery</h1></div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="g-grid">
+        <div class="g-item g1"></div><div class="g-item g2"><div class="g-play"><span>▶</span></div></div>
+        <div class="g-item g3"></div><div class="g-item g4"><div class="g-play"><span>▶</span></div></div>
+        <div class="g-item g5"></div><div class="g-item g6"><div class="g-play"><span>▶</span></div></div>
+        <div class="g-item g7"></div><div class="g-item g8"><div class="g-play"><span>▶</span></div></div>
+      </div>
+      <p class="ig-line">Follow along on <a href="https://www.instagram.com/illumina.collective/" target="_blank">@illumina.collective</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== FOOTER (always visible) ===================== -->
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-news">
+      <div class="cap">Newsletter</div>
+      <p>Sign up to stay updated on classes, workshops, events and so much more goodness.</p>
+      <div class="news-box">
+        <input type="text" placeholder="Full name">
+        <input type="email" placeholder="Email address">
+        <button onclick="alert('Thanks — this will connect to a real newsletter tool later.')">Subscribe</button>
+      </div>
+    </div>
+    <div class="foot-cols">
+      <div><div class="col-title">Studio</div><button onclick="goTo('schedule')">Schedule</button><button onclick="goTo('practices')">Practices</button><button onclick="goTo('teachers')">Teachers</button></div>
+      <div><div class="col-title">Connect</div><a href="https://www.instagram.com/illumina.collective/" target="_blank">Instagram</a><button onclick="goTo('gallery')">Gallery</button></div>
+      <div><div class="col-title">Contact</div><span style="display:block;font-size:13.5px;opacity:.85;margin-bottom:10px;">Barcelona · outdoors</span><a href="mailto:hello@illumina-collective.com">hello@illumina-collective.com</a></div>
+    </div>
+  </div>
+  <div class="wrap foot-bottom"><span>© 2026 illumina collective</span><span>Barcelona</span></div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  function updateHeaderStyle(){
+    const onHome = document.getElementById('page-home').classList.contains('active');
+    const scrolled = window.scrollY > 40;
+    if(onHome){ header.classList.toggle('scrolled', scrolled); header.classList.remove('solid'); }
+    else { header.classList.add('solid'); header.classList.remove('scrolled'); }
+  }
+  window.addEventListener('scroll', updateHeaderStyle);
+
+  function goTo(tab, scrollFooter){
+    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.tab === tab));
+    document.querySelectorAll('.nav-links button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    document.getElementById('mobileMenu').classList.remove('open');
+    window.scrollTo(0,0);
+    updateHeaderStyle();
+    if(scrollFooter){ setTimeout(()=> document.querySelector('footer').scrollIntoView({behavior:'smooth'}), 50); }
+  }
+
+  const words = ['explore.','play.','feel.']; let wi=0;
+  setInterval(()=>{ wi=(wi+1)%words.length; document.getElementById('rotatingWord').textContent = words[wi]; }, 2200);
+
+  updateHeaderStyle();
+</script>
+</body>
+</html>
