@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>illumina — yoga collective, Barcelona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#002FA7;
+  --blue-deep:#001E6E;
+  --azzurro:#9AC2D2;
+  --cream:#EFF5F6;
+  --cream-soft:#FFFFFF;
+  --white:#FFFFFF;
+  --ink:#1D1917;
+  --line:rgba(29,25,23,0.12);
+  --stripe-purple:#635BFF;
+  --max:1240px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:linear-gradient(180deg,#FFFFFF 0%,#EAF3F5 45%,#F5FAFB 100%);background-attachment:fixed;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+img,video{max-width:100%;display:block;}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px;}
+.cap{text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+button{font-family:'Inter',sans-serif;}
+
+.grain{position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.05;mix-blend-mode:overlay;pointer-events:none;}
+
+.sun{display:block;}
+.logo-badge{width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-badge .sun{width:19px;height:19px;color:#fff;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+
+/* NAV */
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;color:#fff;transition:background .35s ease,color .35s ease,padding .3s ease;}
+header.scrolled,header.solid{background:rgba(243,238,227,.95);color:var(--ink);padding:13px 0;border-bottom:1px solid var(--line);}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.brand{display:flex;align-items:center;gap:9px;background:none;border:none;cursor:pointer;}
+.brand .name{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:20px;color:inherit;}
+.brand .sub{font-size:8.5px;opacity:.75;letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+nav.nav-links{display:none;gap:24px;align-items:center;}
+.nav-links button{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.9;font-weight:600;background:none;border:none;color:inherit;cursor:pointer;}
+.nav-links button.active{opacity:1;text-decoration:underline;text-underline-offset:4px;}
+.nav-right{display:flex;align-items:center;gap:18px;}
+.book-cta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;background:var(--blue);color:#fff;padding:10px 18px;border-radius:22px;white-space:nowrap;border:none;cursor:pointer;font-family:'Inter',sans-serif;}
+.burger{display:flex;flex-direction:column;gap:5px;width:22px;background:none;border:none;cursor:pointer;}
+.burger span{height:1.5px;width:100%;background:currentColor;display:block;}
+
+.mobile-menu{position:fixed;inset:0;background:var(--blue);z-index:200;color:#fff;display:flex;flex-direction:column;justify-content:center;padding:34px;transform:translateY(-100%);transition:transform .45s cubic-bezier(.7,0,.2,1);}
+.mobile-menu.open{transform:translateY(0);}
+.mobile-menu button{display:block;width:100%;text-align:left;padding:12px 0;font-family:'Fraunces',serif;font-style:italic;font-size:25px;border-bottom:1px solid rgba(255,255,255,.2);background:none;border-top:none;border-left:none;border-right:none;color:#fff;cursor:pointer;}
+.mobile-menu .close{position:absolute;top:22px;right:26px;background:none;border:none;color:#fff;font-size:26px;width:auto;padding:0;border-bottom:none;}
+.mobile-menu .m-cta{margin-top:24px;display:inline-block;background:#fff;color:var(--blue);padding:12px 20px;border-radius:22px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;width:auto;border-bottom:none;}
+
+/* BACK BUTTON (deep pages only) */
+.back-bar{display:none;padding:14px 0;border-bottom:1px solid var(--line);}
+.back-bar.show{display:block;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;}
+
+/* HERO */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:var(--blue);}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,20,60,.30) 0%,rgba(0,20,60,.05) 35%,rgba(0,20,60,.15) 60%,rgba(0,20,60,.68) 100%);}
+.hero-bottom{position:absolute;left:0;right:0;bottom:0;z-index:3;color:#fff;padding:0 0 40px;}
+.hero-word-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+.hero-word{font-family:'Fraunces',serif;font-style:italic;font-size:25px;min-width:85px;}
+.hero-rule{height:1px;width:32px;background:rgba(255,255,255,.5);}
+.hero-tagline{font-size:12.5px;opacity:.9;max-width:290px;}
+.hero-scroll{position:absolute;right:22px;bottom:24px;z-index:3;color:#fff;font-size:10px;writing-mode:vertical-rl;letter-spacing:.15em;text-transform:uppercase;opacity:.8;font-weight:600;}
+
+/* SECTIONS */
+section{padding:76px 0;}
+.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-bottom:14px;font-weight:600;color:var(--blue);}
+
+/* inverted hierarchy: big label, small italic tagline underneath */
+.section-head{margin-bottom:30px;}
+.eyebrow-big{font-size:clamp(24px,5vw,36px);letter-spacing:.02em;text-transform:uppercase;font-weight:800;color:var(--blue);margin-bottom:6px;line-height:1;}
+.tagline-small{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:clamp(15px,2.2vw,18px);opacity:.75;}
+.practices-band .eyebrow-big{color:#fff;}
+.practices-band .tagline-small{color:var(--azzurro);opacity:1;}
+
+.intro{text-align:center;}
+.intro p{font-size:clamp(17px,3.2vw,22px);line-height:1.6;max-width:720px;margin:0 auto;}
+
+/* ABOUT — small subtle circle photo */
+.split{display:grid;grid-template-columns:1fr;gap:30px;align-items:center;}
+.about-visual{display:flex;justify-content:center;}
+.about-visual .ph{width:min(320px,80%);aspect-ratio:4/5;border-radius:180px 180px 12px 12px;overflow:hidden;position:relative;box-shadow:0 14px 34px rgba(0,47,167,.14);}
+.about-visual .ph img{width:100%;height:100%;object-fit:cover;}
+.split h2{font-size:clamp(26px,5vw,38px);margin-bottom:16px;font-family:'Fraunces',serif;font-style:italic;color:var(--blue);}
+.split p{max-width:46ch;opacity:.85;margin-bottom:14px;font-size:14.5px;}
+.with-explore{margin-top:22px;display:flex;gap:24px;flex-wrap:wrap;}
+.we{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+.we b{display:block;font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:20px;margin-bottom:2px;text-transform:none;letter-spacing:0;color:var(--blue);}
+
+/* PRACTICES band */
+.practices-band{background:var(--blue);color:#fff;}
+.practices-band .eyebrow{color:var(--azzurro);opacity:1;}
+.practices-band h2{max-width:600px;margin-bottom:30px;}
+.p-scroll{display:flex;gap:13px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;}
+.p-scroll::-webkit-scrollbar{display:none;}
+.p-card{flex:0 0 72%;scroll-snap-align:start;aspect-ratio:3/4;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;overflow:hidden;border-radius:10px;}
+.p-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7) 100%);}
+.p-card .shape{position:absolute;top:-10%;right:-15%;width:70%;height:70%;opacity:.16;color:#fff;z-index:0;}
+.p-tile .shape{position:absolute;top:-8%;right:-12%;width:60%;height:60%;opacity:.15;color:#fff;z-index:0;}
+.p-card .t{position:relative;z-index:2;color:#fff;}
+.p-card .t .cap{font-size:9.5px;opacity:.9;margin-bottom:5px;display:block;}
+.p-card .t h3{font-family:'Fraunces',serif;font-style:italic;font-size:23px;font-weight:400;}
+.p1{background:linear-gradient(160deg,#1B5FA8,#001E6E);}.p2{background:linear-gradient(160deg,#4c8a83,#122420);}
+.p3{background:linear-gradient(160deg,#7a4b30,#2c1810);}.p4{background:linear-gradient(160deg,#5b5a86,#1c1b32);}
+.p5{background:linear-gradient(160deg,#9AC2D2,#1B5FA8);}
+
+/* full practices grid */
+.p-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+.p-tile{position:relative;aspect-ratio:4/5;padding:20px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;overflow:hidden;border-radius:10px;}
+.p-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.72) 100%);}
+.p-tile .t{position:relative;z-index:2;}
+.p-tile h3{font-family:'Fraunces',serif;font-style:italic;font-size:26px;font-weight:400;}
+.p-tile p{font-size:12.5px;opacity:.9;margin-top:6px;max-width:30ch;}
+.p-tile .meta{font-size:10px;text-transform:uppercase;letter-spacing:.06em;opacity:.8;margin-top:8px;}
+
+/* EVENTS posters */
+.events-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:30px;}
+.events-head h2{color:var(--blue);}
+.see-all{font-size:11px;text-decoration:underline;text-underline-offset:4px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;background:none;border:none;color:var(--blue);cursor:pointer;}
+.event-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+.poster{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:space-between;padding:20px;color:#fff;}
+.poster .p-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.poster::before{content:"";position:absolute;inset:0;z-index:1;}
+.poster .top-row{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;font-size:9.5px;font-weight:600;text-transform:uppercase;}
+.poster .date-badge{text-align:right;line-height:1.3;}
+.poster .date-badge b{display:block;font-family:'Fraunces',serif;font-style:italic;font-size:18px;font-weight:400;text-transform:none;}
+.poster h3{position:relative;z-index:2;font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:clamp(26px,7vw,36px);line-height:.95;}
+.poster .sub{position:relative;z-index:2;font-size:12px;margin-top:8px;max-width:26ch;opacity:.92;}
+.poster .bottom-row{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:9.5px;text-transform:uppercase;font-weight:600;}
+.poster .book-btn{border:1px solid rgba(255,255,255,.6);padding:7px 13px;border-radius:20px;background:none;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;}
+.e1{background:linear-gradient(200deg,#002FA7 0%,#1B5FA8 55%,#9AC2D2 100%);}.e1::before{background:radial-gradient(circle at 60% 20%,rgba(0,0,0,0),rgba(0,10,40,.4) 90%);}
+.e2{background:linear-gradient(200deg,#7a4a1f 0%,#c98a3a 55%,#f2c98a 100%);}.e2::before{background:radial-gradient(circle at 30% 20%,rgba(0,0,0,0),rgba(20,10,0,.4) 90%);}
+.e3{background:linear-gradient(200deg,#1a1a3a 0%,#3a2a5a 55%,#9AC2D2 100%);}.e3::before{background:radial-gradient(circle at 60% 60%,rgba(0,0,0,0),rgba(0,0,20,.4) 90%);}
+.e4{background:linear-gradient(200deg,#3a1a3a 0%,#8a2a5a 55%,#e0a2c9 100%);}.e4::before{background:radial-gradient(circle at 40% 30%,rgba(0,0,0,0),rgba(20,0,20,.4) 90%);}
+
+/* SCHEDULE — list preview (home) */
+.sched-list{border-top:1px solid var(--line);}
+.sched-row{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);gap:14px;flex-wrap:wrap;}
+.sched-row .sn{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--blue);}
+.sched-row .sm{font-size:11.5px;opacity:.6;margin-top:2px;}
+.sched-row .sb{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px;background:none;border:none;cursor:pointer;}
+.sched-cta{text-align:center;margin-top:26px;}
+
+/* SCHEDULE — full booking blocks */
+.sched-block{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:26px;margin-bottom:24px;scroll-margin-top:90px;}
+.sched-block.highlight{box-shadow:0 0 0 2px var(--blue);}
+.sched-block-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.sched-block-head h3{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:26px;color:var(--blue);}
+.sched-block-head .meta{font-size:12px;opacity:.65;margin-top:4px;}
+.sched-block-head .price{font-family:'Fraunces',serif;font-style:italic;font-size:22px;color:var(--blue);white-space:nowrap;}
+.sched-desc{font-size:13.5px;opacity:.8;margin-bottom:18px;max-width:64ch;line-height:1.7;}
+.policy-mini{background:var(--cream-soft);border-radius:8px;padding:14px 16px;font-size:11.5px;opacity:.75;margin-bottom:20px;line-height:1.6;}
+.book-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+.panel h4{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:17px;margin-bottom:14px;color:var(--ink);}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;opacity:.6;margin-bottom:5px;font-weight:600;}
+.field input,.field select{width:100%;border:1px solid var(--line);background:var(--cream-soft);padding:11px;font-family:'Inter',sans-serif;font-size:13.5px;border-radius:6px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stripe-badge{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+.price-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;}
+.price-row .label{font-size:12.5px;opacity:.7;}
+.price-row .amount{font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:var(--blue);}
+.card-field{border:1px solid var(--line);border-radius:6px;padding:11px 13px;background:var(--cream-soft);display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.card-field input{border:none;outline:none;font-size:13px;width:100%;font-family:'Inter',sans-serif;background:none;}
+.card-field .icons{font-size:9.5px;opacity:.4;white-space:nowrap;}
+.card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.pay-btn{width:100%;background:var(--stripe-purple);color:#fff;border:none;padding:13px;border-radius:6px;font-size:13.5px;font-weight:600;cursor:pointer;}
+.stripe-footer{margin-top:12px;text-align:center;font-size:9.5px;opacity:.45;}
+.success-state{display:none;text-align:center;padding:26px 10px;}
+.success-state.show{display:block;}
+.success-check{width:46px;height:46px;border-radius:50%;background:#2e7d4f;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 14px;}
+.success-state h4{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:19px;margin-bottom:8px;color:var(--ink);}
+.success-state p{font-size:12.5px;opacity:.75;max-width:32ch;margin:0 auto;}
+
+/* MEMBERSHIP / WHATSAPP */
+.membership{background:var(--blue-deep);color:#fff;text-align:center;}
+.membership h2{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(26px,5vw,38px);margin-bottom:16px;}
+.membership p{max-width:560px;margin:0 auto 26px;opacity:.9;font-size:13.5px;line-height:1.7;}
+.membership .m-btn{display:inline-block;background:#fff;color:var(--blue);padding:13px 26px;border-radius:26px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;}
+
+/* GALLERY */
+.gallery h2{font-size:clamp(26px,5vw,40px);font-family:'Fraunces',serif;font-style:italic;margin-bottom:26px;color:var(--blue);}
+.g-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.g-item{aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:8px;background:var(--azzurro);cursor:pointer;}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
+.g-item:hover img{transform:scale(1.12);}
+.ig-line{margin-top:24px;font-size:12.5px;text-align:center;}
+.ig-line a{text-decoration:underline;text-underline-offset:3px;font-weight:600;color:var(--blue);}
+
+/* TEACHERS */
+.teachers-hero{width:100%;aspect-ratio:21/9;border-radius:16px;overflow:hidden;background:var(--azzurro);margin-bottom:56px;}
+.teachers-hero img{width:100%;height:100%;object-fit:cover;}
+.teachers-grid{display:grid;grid-template-columns:1fr;gap:48px;margin-bottom:60px;max-width:900px;margin-left:auto;margin-right:auto;}
+.teacher{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.teacher .ph{width:100%;max-width:280px;aspect-ratio:4/5;border-radius:140px 140px 12px 12px;overflow:hidden;background:var(--azzurro);margin-bottom:18px;box-shadow:0 14px 30px rgba(0,47,167,.14);}
+.teacher .ph img{width:100%;height:100%;object-fit:cover;}
+.teacher .role{font-size:11px;opacity:.65;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700;color:var(--blue);}
+.teacher h3{font-family:'Fraunces',serif;font-style:italic;font-size:28px;margin-bottom:10px;font-weight:400;color:var(--ink);}
+.teacher p{font-size:13.5px;opacity:.8;max-width:38ch;line-height:1.75;}
+.our-story{max-width:70ch;margin:0 auto;}
+.our-story h2{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(24px,4.5vw,32px);margin-bottom:18px;color:var(--blue);text-align:center;}
+.our-story p{font-size:14px;opacity:.85;line-height:1.85;margin-bottom:16px;}
+
+/* FOOTER */
+footer{background:var(--ink);color:#fff;}
+.foot-top{padding:60px 0 44px;display:grid;grid-template-columns:1fr;gap:38px;}
+.foot-news .cap{font-size:12.5px;margin-bottom:12px;opacity:.9;color:var(--azzurro);}
+.foot-news p{font-size:12.5px;opacity:.7;max-width:40ch;margin-bottom:18px;line-height:1.7;}
+.news-box{background:#fff;padding:20px;border-radius:10px;max-width:380px;}
+.news-box input{width:100%;border:1px solid var(--line);padding:10px;font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);margin-bottom:10px;border-radius:6px;}
+.news-box button{background:var(--blue);color:#fff;border:none;padding:11px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;font-weight:700;border-radius:20px;width:100%;}
+.foot-cols{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+.foot-cols .col-title{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;opacity:.55;margin-bottom:10px;font-weight:600;}
+.foot-cols button,.foot-cols a{display:block;font-size:12.5px;opacity:.85;margin-bottom:8px;background:none;border:none;color:inherit;cursor:pointer;text-align:left;padding:0;font-family:'Inter',sans-serif;}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.12);padding:18px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:10px;opacity:.55;text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+
+@media(min-width:860px){
+  nav.nav-links{display:flex;}.burger{display:none;}
+  .split{grid-template-columns:1fr 1.2fr;}
+  .about-visual{order:-1;}
+  .teachers-grid{grid-template-columns:repeat(2,1fr);gap:70px;}
+  .event-grid{grid-template-columns:repeat(3,1fr);}
+  .p-scroll{overflow:visible;}.p-card{flex:1;}
+  .p-grid{grid-template-columns:repeat(3,1fr);}
+  .g-grid{grid-template-columns:repeat(4,1fr);}
+  .foot-top{grid-template-columns:1fr 1fr;gap:80px;}
+  .foot-cols{grid-template-columns:repeat(3,1fr);}
+  .book-grid{grid-template-columns:1fr 1fr;}
+  section{padding:110px 0;}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="sunburst" viewBox="0 0 100 100">
+    <path fill="currentColor" d="M50 0 L54.5 33 L64 3 L61 36 L76 10 L65.5 41 L86 21 L69 46 L94 34 L72 52 L100 50 L72 52 L94 66 L69 54 L86 79 L65.5 59 L76 90 L61 64 L64 97 L54.5 67 L50 100 L45.5 67 L36 97 L39 64 L24 90 L34.5 59 L14 79 L31 54 L6 66 L28 52 L0 50 L28 52 L6 34 L31 46 L14 21 L34.5 41 L24 10 L39 36 L36 3 L45.5 33 Z"/>
+  </symbol>
+</svg>
+
+<header id="siteHeader">
+  <div class="wrap nav-row">
+    <button class="brand" onclick="goTo('home')">
+      <div class="logo-badge"><svg class="sun" viewBox="0 0 100 100"><use href="#sunburst"/></svg></div>
+      <div style="text-align:left;"><div class="name">illumina</div><div class="sub">Collective</div></div>
+    </button>
+    <nav class="nav-links">
+      <button data-tab="practices" onclick="goTo('practices')">Practices</button>
+      <button data-tab="events" onclick="goTo('events')">Events</button>
+      <button data-tab="schedule" onclick="goTo('schedule')">Schedule</button>
+      <button data-tab="teachers" onclick="goTo('teachers')">Teachers</button>
+      <button data-tab="gallery" onclick="goTo('gallery')">Gallery</button>
+    </nav>
+    <div class="nav-right">
+      <button class="book-cta" onclick="goTo('schedule')">Book your class</button>
+      <button class="burger" onclick="document.getElementById('mobileMenu').classList.add('open')"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close" onclick="document.getElementById('mobileMenu').classList.remove('open')">&times;</button>
+  <button onclick="goTo('home')">Home</button>
+  <button onclick="goTo('practices')">Practices</button>
+  <button onclick="goTo('events')">Events</button>
+  <button onclick="goTo('schedule')">Schedule</button>
+  <button onclick="goTo('teachers')">Teachers</button>
+  <button onclick="goTo('gallery')">Gallery</button>
+  <button class="m-cta" onclick="goTo('schedule')">Book your class</button>
+</div>
+
+<!-- ===================== HOME ===================== -->
+<div class="page active" id="page-home" data-tab="home">
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline poster="https://assets.mixkit.co/videos/4420/4420-thumb-360-0.jpg">
+      <source src="https://assets.mixkit.co/videos/4420/4420-360.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="grain"></div>
+    <div class="wrap hero-bottom">
+      <div class="hero-word-row">
+        <span class="hero-word" id="rotatingWord">explore.</span>
+        <span class="hero-rule"></span>
+        <span class="hero-tagline">Come back to your light, together — your community in Barcelona.</span>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <section class="intro">
+    <div class="wrap"><p>Illumina is a Barcelona yoga collective — more than yoga: a space to explore, play and connect through yoga, art, paddle, sailing, music, and more.</p></div>
+  </section>
+
+  <section>
+    <div class="wrap split">
+      <div class="about-visual"><div class="ph"><img src="images/about-community.png" alt="illumina community by the sea"></div></div>
+      <div>
+        <div class="eyebrow">the collective</div>
+        <h2>Your Inner Light</h2>
+        <p>Founded on the idea that yoga is better shared, illumina brings people together across Barcelona — on rooftops, at the beach, on a paddle board, under a full moon. Every gathering pairs breath and movement with something unexpected.</p>
+        <div class="with-explore">
+          <div class="we"><b>Explore</b>New ground, every session</div>
+          <div class="we"><b>Play</b>Light on it, no pressure</div>
+          <div class="we"><b>Feel</b>Breath and body, first</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="practices-band">
+    <div class="wrap">
+      <div class="eyebrow-big">Practices</div>
+      <h2 class="tagline-small">Yoga, plus whatever moves you.</h2>
+      <div class="p-scroll">
+        <div class="p-card p1"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><span class="cap">Land</span><h3>Yoga & painting</h3></div></div>
+        <div class="p-card p2"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><span class="cap">Water</span><h3>Saltwater</h3></div></div>
+        <div class="p-card p3"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><span class="cap">Ritual</span><h3>Full moon yoga</h3></div></div>
+        <div class="p-card p4"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><span class="cap">Sail</span><h3>Sole nero</h3></div></div>
+        <div class="p-card p5"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><span class="cap">Share</span><h3>Yoga & pizza</h3></div></div>
+      </div>
+      <div style="text-align:center;margin-top:26px;"><button class="see-all" style="color:#fff;" onclick="goTo('practices')">See all practices →</button></div>
+    </div>
+  </section>
+
+  <section id="events-preview-anchor">
+    <div class="wrap">
+      <div class="events-head">
+        <div><div class="eyebrow-big">Events</div><h2 class="tagline-small">What's coming up.</h2></div>
+        <button class="see-all" onclick="goTo('events')">Full calendar →</button>
+      </div>
+      <div class="event-grid" id="homeEventGrid"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">schedule</div>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(26px,5vw,40px);color:var(--blue);margin-bottom:26px;">This month, at a glance.</h2>
+      <div class="sched-list" id="homeSchedList"></div>
+      <div class="sched-cta"><button class="see-all" onclick="goTo('schedule')">See the full schedule →</button></div>
+    </div>
+  </section>
+
+  <section class="membership">
+    <div class="wrap">
+      <h2>Join the circle.</h2>
+      <p>Get invited to gatherings, last-minute spots, and community-only news — join our WhatsApp circle.</p>
+      <a href="https://chat.whatsapp.com/EXEMPLE-LIEN-FACTICE" target="_blank" class="m-btn">Join on WhatsApp</a>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="wrap">
+      <div class="eyebrow">gallery</div>
+      <h2>Moments, in motion.</h2>
+      <div class="g-grid">
+        <div class="g-item"><img src="images/gallery-1.png" alt="illumina rooftop yoga at golden hour"></div>
+        <div class="g-item"><img src="images/gallery-2-fullmoon.png" alt="full moon ritual candle"></div>
+        <div class="g-item"><img src="images/gallery-3-solenero.png" alt="sailboat at sunset eclipse sail"></div>
+        <div class="g-item"><img src="images/gallery-4-quote.png" alt="illumina community reflection"></div>
+      </div>
+      <p class="ig-line">Follow along on <a href="https://www.instagram.com/illumina.collective/" target="_blank">@illumina.collective</a> · <button class="see-all" style="border:none;background:none;" onclick="goTo('gallery')">See full gallery →</button></p>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== PRACTICES ===================== -->
+<div class="page" id="page-practices" data-tab="practices">
+  <section style="padding-top:110px;">
+    <div class="wrap">
+      <div class="eyebrow">what we do</div>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(30px,6vw,48px);color:var(--blue);margin-bottom:16px;">Practices</h2>
+      <p style="font-size:14px;opacity:.75;max-width:60ch;margin-bottom:36px;">Yoga is our starting point — never the whole story.</p>
+      <div class="p-grid">
+        <div class="p-tile p1"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><h3>Yoga & painting</h3><p>Meditation, acroyoga and watercolours in the open air.</p><div class="meta">Land · All levels</div></div></div>
+        <div class="p-tile p2"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><h3>Saltwater</h3><p>Paddle, breath and a sunset aperitivo by the sea.</p><div class="meta">Water · Seasonal</div></div></div>
+        <div class="p-tile p3"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><h3>Full moon yoga</h3><p>Release what was, welcome what comes.</p><div class="meta">Ritual · Monthly</div></div></div>
+        <div class="p-tile p4"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><h3>Sole nero</h3><p>An eclipse sail, sunset practice and good company.</p><div class="meta">Sail · Occasional</div></div></div>
+        <div class="p-tile p5"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><h3>Yoga & pizza</h3><p>Practice, then table — community over a slow meal.</p><div class="meta">Share · Monthly</div></div></div>
+        <div class="p-tile" style="background:linear-gradient(160deg,#5b5a86,#1c1b32);"><svg class="shape" viewBox="0 0 100 100"><use href="#sunburst"/></svg><div class="t"><h3>Yoga electronika</h3><p>Yoga, vermut and a dj-set to close the evening.</p><div class="meta">Land · Monthly</div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="membership">
+    <div class="wrap"><h2>Not sure which one?</h2><p>Tell us a bit about you and we'll help you find your first session.</p>
+    <button class="m-btn" onclick="goTo('schedule')">See the schedule</button></div>
+  </section>
+</div>
+
+<!-- ===================== EVENTS ===================== -->
+<div class="page" id="page-events" data-tab="events">
+  <section style="padding-top:110px;">
+    <div class="wrap">
+      <div class="eyebrow">September — 2026 · Barcelona</div>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(30px,6vw,48px);color:var(--blue);margin-bottom:30px;">Events</h2>
+      <div class="event-grid" id="eventsFullGrid"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== SCHEDULE ===================== -->
+<div class="page" id="page-schedule" data-tab="schedule">
+  <div class="back-bar" id="scheduleBackBar">
+    <div class="wrap"><button class="back-btn" onclick="goBack()">← Back</button></div>
+  </div>
+  <section style="padding-top:60px;">
+    <div class="wrap">
+      <div class="eyebrow">book your class</div>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(30px,6vw,48px);color:var(--blue);margin-bottom:10px;">Schedule</h2>
+      <p style="font-size:13.5px;opacity:.7;max-width:60ch;margin-bottom:36px;">Pick a session below — fill in your details and reserve your spot in one step. Spots are limited to keep every gathering intimate.</p>
+      <div id="scheduleBlocks"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== TEACHERS ===================== -->
+<div class="page" id="page-teachers" data-tab="teachers">
+  <section style="padding-top:110px;">
+    <div class="wrap">
+      <div class="eyebrow" style="text-align:center;">the people holding the space</div>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(30px,6vw,48px);color:var(--blue);margin-bottom:30px;text-align:center;">Teachers</h2>
+      <div class="teachers-hero"><div class="ph"><img src="images/about-community.png" alt="Callu and Martina, illumina co-founders"></div></div>
+      <div class="teachers-grid">
+        <div class="teacher">
+          <div class="ph"><img src="images/gallery-1.png" alt="Callu, illumina teacher"></div>
+          <div class="role">Co-founder · Teacher</div>
+          <h3>Callu</h3>
+          <p>Callu discovered yoga as a way back to her own body after years of moving too fast. Today she guides movement and breathwork with a soft, grounded presence — bringing people back to themselves, one session at a time. [Bio complète à venir]</p>
+        </div>
+        <div class="teacher">
+          <div class="ph"><img src="images/gallery-4-quote.png" alt="Martina, illumina teacher"></div>
+          <div class="role">Co-founder · Teacher</div>
+          <h3>Martina</h3>
+          <p>Martina believes a practice is only as good as the community around it. She weaves ritual, sound and connection into every gathering — the heartbeat behind illumina's open-circle spirit. [Bio complète à venir]</p>
+        </div>
+      </div>
+      <div class="our-story">
+        <h2>Our story</h2>
+        <p>Illumina started with a simple observation: the best part of any yoga class wasn't the poses — it was the feeling of showing up as a stranger and leaving as part of something. Callu and Martina met practicing on a Barcelona rooftop, and quickly realised they wanted to build more of that: mornings by the sea, evenings under the full moon, a community that grows a little with every session.</p>
+        <p>What started as a handful of friends on a rooftop is now a rhythm — weekly gatherings, seasonal rituals, and an ever-growing circle of people who come back not just for the practice, but for each other. [Texte complet à venir]</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== GALLERY ===================== -->
+<div class="page" id="page-gallery" data-tab="gallery">
+  <section style="padding-top:110px;">
+    <div class="wrap">
+      <div class="eyebrow">moments, in motion</div>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(30px,6vw,48px);color:var(--blue);margin-bottom:30px;">Gallery</h2>
+      <div class="g-grid">
+        <div class="g-item"><img src="images/gallery-1.png" alt=""></div>
+        <div class="g-item"><img src="images/about-community.png" alt=""></div>
+        <div class="g-item"><img src="images/gallery-2-fullmoon.png" alt=""></div>
+        <div class="g-item"><img src="images/gallery-3-solenero.png" alt=""></div>
+        <div class="g-item"><img src="images/gallery-4-quote.png" alt=""></div>
+        <div class="g-item" style="background:linear-gradient(160deg,#1B5FA8,#001E6E);"></div>
+        <div class="g-item" style="background:linear-gradient(160deg,#9AC2D2,#4c8a83);"></div>
+        <div class="g-item" style="background:linear-gradient(160deg,#7a4a1f,#c98a3a);"></div>
+      </div>
+      <p class="ig-line">Follow along on <a href="https://www.instagram.com/illumina.collective/" target="_blank">@illumina.collective</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== FOOTER (always visible) ===================== -->
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-news">
+      <div class="cap">Newsletter</div>
+      <p>Sign up to stay updated on classes, workshops, events and so much more goodness.</p>
+      <div class="news-box">
+        <input type="text" placeholder="Full name">
+        <input type="email" placeholder="Email address">
+        <button onclick="alert('Thanks — this will connect to Mailchimp soon.')">Subscribe</button>
+      </div>
+    </div>
+    <div class="foot-cols">
+      <div><div class="col-title">Studio</div><button onclick="goTo('practices')">Practices</button><button onclick="goTo('events')">Events</button><button onclick="goTo('schedule')">Schedule</button></div>
+      <div><div class="col-title">Connect</div><button onclick="goTo('teachers')">Teachers</button><button onclick="goTo('gallery')">Gallery</button><a href="https://www.instagram.com/illumina.collective/" target="_blank">Instagram</a></div>
+      <div><div class="col-title">Contact</div><span style="display:block;font-size:12.5px;opacity:.85;margin-bottom:8px;">Barcelona · outdoors</span><a href="mailto:hola@illuminacollective.com">hola@illuminacollective.com</a></div>
+    </div>
+  </div>
+  <div class="wrap foot-bottom"><span>© 2026 illumina collective</span><span>Barcelona</span></div>
+</footer>
+
+<script>
+/* ======= EVENT DATA (single source of truth) ======= */
+const EVENTS = [
+  {
+    id:'sole-nero', color:'e1', title:'sole<br>nero', tag:'Sole Nero',
+    date:'12', month:'Sep', time:'Sunset', location:'Location upon registration',
+    partner:'eswell', price:'€25', photo:'images/gallery-3-solenero.png',
+    shortDesc:'Eclipse sail & sunset aperitivo.',
+    longDesc:'An eclipse sail, sunset practice and good company. We set off as the sun goes down, practice on deck, then share a sunset aperitivo on the water.'
+  },
+  {
+    id:'yoga-sangha', color:'e2', title:'yoga<br>sangha', tag:'Yoga Sangha',
+    date:'19', month:'Sep', time:'19:30', location:'Barcelona coastline',
+    partner:'pizzeria 081', price:'€20', photo:'images/gallery-1.png',
+    shortDesc:'Yoga practice, pizza afterflow.',
+    longDesc:'A grounding practice by the coastline, followed by pizza afterflow with the community. All levels welcome — this one is about connection as much as movement.'
+  },
+  {
+    id:'full-moon-yoga', color:'e3', title:'full moon<br>yoga', tag:'Full Moon Yoga',
+    date:'29', month:'Sep', time:'20:00', location:'Location upon registration',
+    partner:'kim_rxo', price:'€25', photo:'images/gallery-2-fullmoon.png',
+    shortDesc:'Full moon practice, release ritual.',
+    longDesc:'Release what was, welcome what comes. A full moon practice under the open sky — gentle movement, breathwork, and a closing release ritual together as a circle.'
+  },
+  {
+    id:'yoga-electronika', color:'e4', title:'yoga<br>electronika', tag:'Yoga Electronika',
+    date:'03', month:'Oct', time:'19:30', location:"Carrer d'Àvila 138",
+    partner:'rodriggo', price:'€22', photo:'images/about-community.png',
+    shortDesc:'Yoga, vermut, dj-set to close.',
+    longDesc:'Yoga by illumina, an electronic set by Rodriggo, and vermut to close the evening. A softer entry point into the collective — come for the yoga, stay for the music.'
+  }
+];
+
+/* ======= RENDER: posters (home preview = first 3, events tab = all 4) ======= */
+function posterHTML(ev){
+  return `
+  <div class="poster ${ev.color}">
+    ${ev.photo ? `<img class="p-photo" src="${ev.photo}" alt="${ev.tag}">` : ''}
+    <div class="top-row"><span>${ev.location}</span><div class="date-badge"><b>${ev.date}</b>${ev.month} · ${ev.time}</div></div>
+    <div>
+      <h3>${ev.title}</h3>
+      <p class="sub">${ev.shortDesc}</p>
+      <div class="bottom-row"><span>× ${ev.partner}</span><button class="book-btn" onclick="bookEvent('${ev.id}')">Book</button></div>
+    </div>
+  </div>`;
+}
+document.getElementById('homeEventGrid').innerHTML = EVENTS.slice(0,3).map(posterHTML).join('');
+document.getElementById('eventsFullGrid').innerHTML = EVENTS.map(posterHTML).join('');
+
+/* ======= RENDER: home schedule simple list ======= */
+document.getElementById('homeSchedList').innerHTML = EVENTS.map(ev => `
+  <div class="sched-row">
+    <div><div class="sn">${ev.tag}</div><div class="sm">${ev.date} ${ev.month} · ${ev.time}</div></div>
+    <button class="sb" onclick="bookEvent('${ev.id}')">Book →</button>
+  </div>
+`).join('');
+
+/* ======= RENDER: full schedule booking blocks ======= */
+function scheduleBlockHTML(ev){
+  return `
+  <div class="sched-block" id="sched-${ev.id}">
+    <div class="sched-block-head">
+      <div>
+        <h3>${ev.tag}</h3>
+        <div class="meta">${ev.date} ${ev.month} · ${ev.time} · ${ev.location} · with ${ev.partner}</div>
+      </div>
+      <div class="price">${ev.price}</div>
+    </div>
+    <p class="sched-desc">${ev.longDesc}</p>
+    <div class="policy-mini"><b>Cancellation:</b> free up to 24h before. Within 24h, non-refundable but transferable — just email us.</div>
+    <div class="book-grid">
+      <div class="panel">
+        <h4>Your details</h4>
+        <div class="field"><label>Full name</label><input type="text" placeholder="Jane Doe"></div>
+        <div class="field"><label>Email</label><input type="email" placeholder="jane@email.com"></div>
+        <div class="field-row">
+          <div class="field"><label>Phone</label><input type="text" placeholder="+34 600 000 000"></div>
+          <div class="field"><label>Participants</label>
+            <select><option>1 person</option><option>2 people</option><option>3 people</option><option>4+ people</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div id="checkout-${ev.id}">
+          <div class="stripe-badge">
+            <svg viewBox="0 0 60 25" width="48"><text x="0" y="18" font-family="Arial" font-weight="bold" font-size="18" fill="#635BFF">stripe</text></svg>
+            <span style="font-size:10px;opacity:.55;">Secure checkout — simulation</span>
+          </div>
+          <div class="price-row"><span class="label">Total due today</span><span class="amount">${ev.price}</span></div>
+          <div class="card-field"><input type="text" placeholder="Card number" maxlength="19"><span class="icons">VISA · MC</span></div>
+          <div class="card-row">
+            <div class="card-field"><input type="text" placeholder="MM / YY" maxlength="7"></div>
+            <div class="card-field"><input type="text" placeholder="CVC" maxlength="3"></div>
+          </div>
+          <button class="pay-btn" onclick="simulatePayment('${ev.id}')">Pay ${ev.price}</button>
+          <div class="stripe-footer">🔒 Simulated for demo — no real charge</div>
+        </div>
+        <div class="success-state" id="success-${ev.id}">
+          <div class="success-check">✓</div>
+          <h4>You're in!</h4>
+          <p>A confirmation email with the exact location will be sent 24h before the session.</p>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+document.getElementById('scheduleBlocks').innerHTML = EVENTS.map(scheduleBlockHTML).join('');
+
+function simulatePayment(id){
+  document.getElementById('checkout-'+id).style.display = 'none';
+  document.getElementById('success-'+id).classList.add('show');
+}
+
+/* ======= TAB NAVIGATION ======= */
+const header = document.getElementById('siteHeader');
+let lastTab = 'home';
+let deepLinked = false;
+
+function updateHeaderStyle(){
+  const onHome = document.getElementById('page-home').classList.contains('active');
+  const scrolled = window.scrollY > 40;
+  if(onHome){ header.classList.toggle('scrolled', scrolled); header.classList.remove('solid'); }
+  else { header.classList.add('solid'); header.classList.remove('scrolled'); }
+}
+window.addEventListener('scroll', updateHeaderStyle);
+
+function goTo(tab, opts){
+  opts = opts || {};
+  const current = document.querySelector('.page.active')?.dataset.tab || 'home';
+  if(tab !== current){ lastTab = current; }
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.tab === tab));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('mobileMenu').classList.remove('open');
+
+  if(tab === 'schedule'){
+    deepLinked = !!opts.fromEvent;
+    document.getElementById('scheduleBackBar').classList.toggle('show', deepLinked);
+  }
+
+  if(opts.scrollToId){
+    setTimeout(()=>{
+      const el = document.getElementById(opts.scrollToId);
+      if(el){
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+        el.classList.add('highlight');
+        setTimeout(()=> el.classList.remove('highlight'), 2000);
+      }
+    }, 60);
+  } else {
+    window.scrollTo(0,0);
+  }
+  updateHeaderStyle();
+}
+
+function bookEvent(id){
+  goTo('schedule', {fromEvent:true, scrollToId:'sched-'+id});
+}
+
+function goBack(){
+  goTo(lastTab);
+}
+
+const words = ['explore.','play.','feel.']; let wi=0;
+setInterval(()=>{ wi=(wi+1)%words.length; document.getElementById('rotatingWord').textContent = words[wi]; }, 2200);
+
+updateHeaderStyle();
+</script>
+</body>
+</html>
